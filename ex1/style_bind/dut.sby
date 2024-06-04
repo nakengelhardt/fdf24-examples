@@ -1,0 +1,15 @@
+[options]
+mode bmc
+depth 1
+
+[engines]
+smtbmc
+
+[script]
+read -sv dut.sv
+read -sv checker.sv
+prep -top dut
+
+[files]
+dut.sv
+checker.sv

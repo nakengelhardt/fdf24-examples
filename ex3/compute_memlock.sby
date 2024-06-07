@@ -1,0 +1,16 @@
+[options]
+mode cover
+depth 15
+
+[engines]
+smtbmc yices
+
+[script]
+read -formal compute.v
+prep -top marlann_compute
+cutpoint marlann_compute_mul2
+cutpoint marlann_compute/coeff_mem
+cutpoint marlann_compute/code_mem
+
+[files]
+compute.v

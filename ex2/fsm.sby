@@ -1,0 +1,16 @@
+[options]
+mode cover
+depth 40
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+read -formal fsm.sv position_checker.sv debug.sv
+prep -top game_fsm
+
+[files]
+fsm.sv
+position_checker.sv
+map_data.mem
+debug.sv

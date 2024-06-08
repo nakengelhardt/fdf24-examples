@@ -1,0 +1,32 @@
+[options]
+mode prove
+
+[engines]
+abc pdr
+
+[script]
+read -formal game_state.vh integration.sv debouncer.sv fsm.sv debug.sv position_checker.sv fsm_btn_interface_properties.sv fsm_graphics_interface_properties.sv bind_fsm_graphics_interface_properties.sv bind_fsm_btn_interface_properties.sv bind_global_assumes.sv
+prep -top integration_test_debounce_fsm
+
+[files]
+game_state.vh
+integration.sv
+debouncer.sv
+fsm.sv
+debug.sv
+position_checker.sv
+fsm_btn_interface_properties.sv
+fsm_graphics_interface_properties.sv
+map_data.mem
+
+[file bind_fsm_graphics_interface_properties.sv]
+bind integration_test_debounce_fsm fsm_graphics_interface_properties #(.ASSUME_MODE(0)) fsm_graphics_interface_properties_i(.*);
+
+[file bind_fsm_btn_interface_properties.sv]
+bind integration_test_debounce_fsm fsm_btn_interface_properties #(.ASSUME_MODE(0)) fsm_btn_interface_properties_i(.*);
+
+[file bind_global_assumes.sv]
+module global_assumes (input clk, input reset);
+    initial assume (reset);
+endmodule
+bind integration_test_debounce_fsm global_assumes global_assumes_i(.*);

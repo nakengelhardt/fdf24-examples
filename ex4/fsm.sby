@@ -1,0 +1,50 @@
+[tasks]
+cover_win
+check_outputs
+
+[options]
+cover_win:
+mode cover
+depth 40
+--
+
+check_outputs:
+mode prove
+depth 1
+--
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+cover_win: read -formal game_state.vh fsm.sv position_checker.sv debug.sv fsm_btn_interface_properties.sv bind_fsm_btn_interface_properties.sv bind_global_assumes.sv bind_cover_win_check.sv
+check_outputs: read -formal game_state.vh fsm.sv position_checker.sv debug.sv fsm_btn_interface_properties.sv bind_fsm_btn_interface_properties.sv bind_global_assumes.sv fsm_graphics_interface_properties.sv bind_fsm_graphics_interface_properties.sv
+prep -top game_fsm
+
+[files]
+game_state.vh
+fsm.sv
+fsm_btn_interface_properties.sv
+position_checker.sv
+map_data.mem
+debug.sv
+fsm_graphics_interface_properties.sv
+
+[file bind_fsm_graphics_interface_properties.sv]
+bind game_fsm fsm_graphics_interface_properties #(.ASSUME_MODE(0)) fsm_graphics_interface_properties_i(.*);
+
+[file bind_fsm_btn_interface_properties.sv]
+bind game_fsm fsm_btn_interface_properties #(.ASSUME_MODE(1)) fsm_btn_interface_properties_i(.*);
+
+[file bind_global_assumes.sv]
+module global_assumes (input clk, input reset);
+    initial assume (reset);
+endmodule
+bind game_fsm global_assumes global_assumes_i(.*);
+
+[file bind_cover_win_check.sv]
+module cover_win_check (input logic clk, input logic reset, input game_state_t game_state, input logic debug_active);
+    won: cover property (@(posedge clk) game_state == GAME_WON [*2]);
+    restrict property (@(posedge clk) !debug_active);
+endmodule 
+bind game_fsm cover_win_check cover_win_check_i(.*);

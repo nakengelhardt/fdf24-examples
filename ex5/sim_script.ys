@@ -1,0 +1,4 @@
+read -formal game_state.vh fsm.sv position_checker.sv fsm_btn_interface_properties.sv bind_fsm_btn_interface_properties.sv bind_global_assumes.sv bind_cover_win_check.sv
+prep -top game_fsm
+sim -r fsm_tb.vcd -w -scope fsm_tb.fsm_inst
+# write_rtlil fsm_post_sim.il

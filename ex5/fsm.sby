@@ -1,0 +1,21 @@
+[options]
+mode cover
+depth 40
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+script sim_script.ys
+
+[files]
+sim_script.ys
+fsm_tb.vcd
+game_state.vh
+fsm.sv
+fsm_btn_interface_properties.sv
+position_checker.sv
+map_data.mem
+bind_fsm_btn_interface_properties.sv
+bind_global_assumes.sv
+bind_cover_win_check.sv
